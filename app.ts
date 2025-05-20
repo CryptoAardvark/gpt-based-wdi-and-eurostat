@@ -31,6 +31,17 @@ async function main() {
   const result = await generator.generateFromPrompt(
     "top 10 countries with happiest people - please present visully in a table or graph"
   );
+
+  console.log("Generated URL:", result.data);
+
+  // Example result object
+  const resultURL: ResultURLData = {
+    data: {
+      imf: result.data.wdi,
+      wdi: result.data.imf,
+      eur: result.data.eur,
+    },
+  };
 }
 
 main().catch(console.error);
