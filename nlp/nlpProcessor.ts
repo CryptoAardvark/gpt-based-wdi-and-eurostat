@@ -155,7 +155,14 @@ export class UrlGenerator {
              +
             `&time=${params.imf_years.join("&time=")}`;
         }
-        
+        return {
+          data: {
+            wdi: WDIurl,
+            imf: IMFurl,
+            eur: Eurostaturl,
+            topics: params.topics,
+          },
+        };
       }
 
     }catch (error) {
