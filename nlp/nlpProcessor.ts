@@ -166,7 +166,13 @@ export class UrlGenerator {
       }
 
     }catch (error) {
-
+      console.log("error ->", " error is ready");
+      let errorMessage = "Unknown error";
+      if (error instanceof Error) errorMessage = error.message;
+      return {
+        data: { wdi: "", imf: "", eur: "", topics: "" },
+        error: errorMessage,
+      };
     }
   }
 }
