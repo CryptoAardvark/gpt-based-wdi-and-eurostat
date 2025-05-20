@@ -137,6 +137,25 @@ export class UrlGenerator {
             )}/${params.countries.join("/")}` +
             `?periods=${params.imf_years.join(",")}`;
         }
+        //define eurostat url construction
+        if (
+          params.countries !== null &&
+          Array.isArray(pineconeParams.eurostat_indicators) &&
+          pineconeParams.eurostat_indicators.length !== 0 &&
+          Array.isArray(params.imf_years) &&
+          params.imf_years.length !== 0
+        ) {
+          pineconeParams.eurostat_indicators.map((item) => {
+            item.toLowerCase();
+          });
+          Eurostaturl =
+            `https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/${pineconeParams.eurostat_indicators.join(
+              "/"
+            )}?lang=EN&freq=A&geo=${params.countriesT.join("&geo=")}`
+             +
+            `&time=${params.imf_years.join("&time=")}`;
+        }
+        
       }
 
     }catch (error) {
