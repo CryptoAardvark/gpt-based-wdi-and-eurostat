@@ -20,6 +20,54 @@ export class UrlGenerator {
 
   //define function to analysis user's query
   async generateFromPrompt(prompt: string): Promise<APIResponse<string>>{
-    
+    try{
+      //AI Parsing using openai
+      const completion = await this.openai.chat.completions.create({
+        model: "gpt-4-1106-preview",
+        messages: [
+          {
+            role: "system",
+            content: `"You are a professional AI assistant. Always return a valid JSON object in the following format.
+            When analyzing a user's query:
+
+            Extract Year or Period:
+            If a single year is mentioned, set both "start" and "end" to this year.
+            If a range of years is mentioned, use the range for "start" and "end".
+            If no year is mentioned, default to the latest updated data year, 2023.
+
+            Generate Country Codes:
+            If the query involves a list of countries without specific names (e.g., "top 10 countries"), infer or suggest relevant countries based on context (like region or economic indicators) and populate with ISO codes.
+            Identify Topics:
+            If the query doesn't include special topic, topic set to GDP.
+            Detect economic and financial topics such as growth rates, inflation, etc.
+
+            IMF Year Array:
+            Fill "imf_years" with all years in the specified range or the inferred single year.
+
+            JSON Response:
+            {
+              "wdi_years": {"start": YYYY, "end": YYYY},
+              "imf_years": ["YYYY", "YYYY", "YYYY"],
+              "topics": "topic_name1 and topic_name2 and topic_name3",
+              "countries": ["country_iso3code1", "country_iso3code2", "country_iso3code3"],
+              "countriesT": ["country_iso2code1", "country_iso2code2", "country_iso2code3"],
+              "simpleAnswer": "Type: string | Description: Friendly response to general/non-data questions"
+            }
+
+            General Queries Handling:
+            For queries that lack specifics (years, countries) or aren't related to IMF/WDI data:
+            Only provide an answer under "simpleAnswer".
+            Set all other fields ("wdi_years", "imf_years", "topics", "countries") to null."`,
+          },
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+        temperature: 0,
+      });
+    }catch (error) {
+
+    }
   }
 }
