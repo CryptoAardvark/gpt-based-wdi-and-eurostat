@@ -35,3 +35,9 @@ export interface PineconeParams {
   eurostat_indicators: string[];
   countries: string[];
 }
+
+//define message interface for empty messages
+export interface Message {
+  role: string;
+  content: string;
+}
