@@ -14,3 +14,10 @@ import * as path from "path";
 import { ResultURLData } from "./types/type";
 
 dotenv.config();
+
+//define api key
+const pineconeApiKey = process.env.PINECONE_API_KEY;
+const openaiApikey = process.env.OPENAI_API_KEY;
+if (!pineconeApiKey || !openaiApikey) {
+  throw new Error("API key was not defined!");
+}
