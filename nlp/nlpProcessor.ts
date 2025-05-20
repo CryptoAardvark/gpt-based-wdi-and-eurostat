@@ -93,6 +93,18 @@ export class UrlGenerator {
           role: "user",
           content: params.topics,
         };
+
+        const resp = await assistant._chat({ messages: [msg] });
+        if (!resp.message) {
+          throw new Error("Pinecone response content is null");
+        }
+
+        const pineconeParams: PineconeParams = JSON.parse(
+          resp.message.content!
+        );
+
+        console.log("pineconeParams ->", pineconeParams);
+
       }
 
     }catch (error) {
