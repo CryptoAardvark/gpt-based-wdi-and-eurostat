@@ -109,7 +109,7 @@ export class UrlGenerator {
         let WDIurl: string = "";
         let IMFurl: string = "";
         let Eurostaturl: string = "";
-
+        //wdi url construction
         if (
           params.countries !== null &&
           Array.isArray(pineconeParams.wdi_indicators) &&
@@ -122,6 +122,20 @@ export class UrlGenerator {
             )}` +
             `/indicator/${pineconeParams.wdi_indicators.join(";")}` +
             `?date=${params.wdi_years.start}:${params.wdi_years.end}`;
+        }
+        //define imf url construction
+        if (
+          params.countries !== null &&
+          Array.isArray(pineconeParams.imf_indicators) &&
+          pineconeParams.imf_indicators.length !== 0 &&
+          Array.isArray(params.imf_years) &&
+          params.imf_years.length !== 0
+        ) {
+          IMFurl =
+            `https://www.imf.org/external/datamapper/api/v2/${pineconeParams.imf_indicators.join(
+              "/"
+            )}/${params.countries.join("/")}` +
+            `?periods=${params.imf_years.join(",")}`;
         }
       }
 
