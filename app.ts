@@ -7,7 +7,7 @@ app.listen(5000, () => {
 
 //----------------------------------------------------------********************************_____________________________________
 
-import { UrlGenerator } from "./utils/nlpProcessor";
+import { UrlGenerator } from "./nlp/nlpProcessor";
 import * as dotenv from "dotenv";
 import { Worker } from "worker_threads";
 import * as path from "path";
@@ -50,6 +50,16 @@ async function main() {
     imfUrl: resultURL.data.imf,
     wdiUrl: resultURL.data.wdi,
     eurUrl: resultURL.data.eur,
+  });
+
+  worker.on('message', (event) => {
+    const [wdiResult, imfResult, eurResult] = event as Array<any>;
+
+    processRequestResult("IMF Data:", imfResult, wdiResult, eurResult);
+  });
+
+  worker.on('error', (error) => {
+    console.error("Worker error:", error);
   });
 }
 
