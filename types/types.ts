@@ -16,3 +16,14 @@ export interface DateParams {
   countriesT: string[];
   simpleAnswer: string;
 }
+
+//API response interface
+export interface APIResponse<T> {
+  data: {
+    imf: T;
+    wdi: T;
+    eur: T;
+    topics: string;
+  };
+  error?: string;
+}
