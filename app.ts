@@ -24,3 +24,10 @@ if (!pineconeApiKey || !openaiApikey) {
 
 //define url generator
 const generator = new UrlGenerator(openaiApikey, pineconeApiKey);
+
+//define main function
+async function main() {
+
+}
+
+main().catch(console.error);
