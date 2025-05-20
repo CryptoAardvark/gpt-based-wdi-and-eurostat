@@ -66,6 +66,11 @@ export class UrlGenerator {
         ],
         temperature: 0,
       });
+
+      //exception for ai parsing
+      if (!completion.choices[0].message.content) {
+        throw new Error("AI response content is null");
+      }
     }catch (error) {
 
     }
