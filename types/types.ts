@@ -27,3 +27,11 @@ export interface APIResponse<T> {
   };
   error?: string;
 }
+
+//Pinecone interface
+export interface PineconeParams {
+  imf_indicators: string[];
+  wdi_indicators: string[];
+  eurostat_indicators: string[];
+  countries: string[];
+}
