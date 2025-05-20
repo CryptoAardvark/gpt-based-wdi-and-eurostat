@@ -109,6 +109,20 @@ export class UrlGenerator {
         let WDIurl: string = "";
         let IMFurl: string = "";
         let Eurostaturl: string = "";
+
+        if (
+          params.countries !== null &&
+          Array.isArray(pineconeParams.wdi_indicators) &&
+          pineconeParams.wdi_indicators.length !== 0 &&
+          params.wdi_years !== null
+        ) {
+          WDIurl =
+            `https://api.worldbank.org/v2/country/${params.countries.join(
+              ";"
+            )}` +
+            `/indicator/${pineconeParams.wdi_indicators.join(";")}` +
+            `?date=${params.wdi_years.start}:${params.wdi_years.end}`;
+        }
       }
 
     }catch (error) {
