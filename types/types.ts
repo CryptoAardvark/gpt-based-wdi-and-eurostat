@@ -41,3 +41,21 @@ export interface Message {
   role: string;
   content: string;
 }
+
+//Result interface
+
+export interface ResultSource {
+  Topic: string;
+  Unit: string;
+  country: CountryPerValue[];
+}
+
+export interface CountryPerValue {
+  country_name: string;
+  values: YearPerValue[];
+}
+
+export interface YearPerValue {
+  [year: string]: string; // Dynamic key for year-value pairs
+}
+
