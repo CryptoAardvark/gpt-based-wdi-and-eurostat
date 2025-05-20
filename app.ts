@@ -42,6 +42,15 @@ async function main() {
       eur: result.data.eur,
     },
   };
+
+  //thread process
+  const worker = new Worker(path.resolve(__dirname, "./thread/worker.js"));
+
+  worker.postMessage({
+    imfUrl: resultURL.data.imf,
+    wdiUrl: resultURL.data.wdi,
+    eurUrl: resultURL.data.eur,
+  });
 }
 
 main().catch(console.error);
