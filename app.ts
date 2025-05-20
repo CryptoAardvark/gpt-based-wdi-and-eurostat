@@ -86,7 +86,7 @@ async function main() {
         contextEurData = JSON.stringify(result2);
         // console.log("Eurostat data:", contextEurData);
       }
-      const finalResult = await generator.generateResult(
+      const finalResult = await generator.(
         "top 10 countries with happiest people - please present visully in a table or graph",
         contextImfData,
         contextWdiData,
