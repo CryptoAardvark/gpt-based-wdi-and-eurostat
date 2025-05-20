@@ -19,8 +19,8 @@ export class UrlGenerator {
   }
 
   //define function to analysis user's query
-  async generateFromPrompt(prompt: string): Promise<APIResponse<string>>{
-    try{
+  async generateFromPrompt(prompt: string): Promise<APIResponse<string>> {
+    try {
       //AI Parsing using openai
       const completion = await this.openai.chat.completions.create({
         model: "gpt-4-1106-preview",
@@ -81,7 +81,7 @@ export class UrlGenerator {
 
       let params: DateParams = JSON.parse(sanitizedContent);
       // console.log("params ->", params);
-      
+
       //Case response includes only simple answer.
       if (params.simpleAnswer !== null) {
         return { data: { wdi: "", imf: "", eur: "", topics: params.topics } };
@@ -151,8 +151,7 @@ export class UrlGenerator {
           Eurostaturl =
             `https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/${pineconeParams.eurostat_indicators.join(
               "/"
-            )}?lang=EN&freq=A&geo=${params.countriesT.join("&geo=")}`
-             +
+            )}?lang=EN&freq=A&geo=${params.countriesT.join("&geo=")}` +
             `&time=${params.imf_years.join("&time=")}`;
         }
         return {
@@ -164,8 +163,7 @@ export class UrlGenerator {
           },
         };
       }
-
-    }catch (error) {
+    } catch (error) {
       console.log("error ->", " error is ready");
       let errorMessage = "Unknown error";
       if (error instanceof Error) errorMessage = error.message;
