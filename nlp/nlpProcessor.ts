@@ -77,10 +77,15 @@ export class UrlGenerator {
         .replace(/```json/g, "") // Remove JSON code block markers
         .replace(/```/g, "") // Remove stray backticks
         .trim();
-      console.log("sanitizedContent ->", sanitizedContent);
-      let params: DateParams = JSON.parse(sanitizedContent);
-      console.log("params ->", params);
+      // console.log("sanitizedContent ->", sanitizedContent);
 
+      let params: DateParams = JSON.parse(sanitizedContent);
+      // console.log("params ->", params);
+      
+      //Case response includes only simple answer.
+      if (params.simpleAnswer !== null) {
+        return { data: { wdi: "", imf: "", eur: "", topics: params.topics } };
+      }
 
     }catch (error) {
 
