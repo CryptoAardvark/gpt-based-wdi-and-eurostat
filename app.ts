@@ -21,3 +21,6 @@ const openaiApikey = process.env.OPENAI_API_KEY;
 if (!pineconeApiKey || !openaiApikey) {
   throw new Error("API key was not defined!");
 }
+
+//define url generator
+const generator = new UrlGenerator(openaiApikey, pineconeApiKey);
