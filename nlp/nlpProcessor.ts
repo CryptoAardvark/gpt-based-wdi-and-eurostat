@@ -71,6 +71,17 @@ export class UrlGenerator {
       if (!completion.choices[0].message.content) {
         throw new Error("AI response content is null");
       }
+
+      //parse AI response to json
+      let sanitizedContent = completion.choices[0].message.content
+        .replace(/```json/g, "") // Remove JSON code block markers
+        .replace(/```/g, "") // Remove stray backticks
+        .trim();
+      console.log("sanitizedContent ->", sanitizedContent);
+      let params: DateParams = JSON.parse(sanitizedContent);
+      console.log("params ->", params);
+
+
     }catch (error) {
 
     }
