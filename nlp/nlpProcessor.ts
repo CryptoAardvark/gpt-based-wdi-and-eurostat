@@ -105,6 +105,10 @@ export class UrlGenerator {
 
         console.log("pineconeParams ->", pineconeParams);
 
+        //URL Construction
+        let WDIurl: string = "";
+        let IMFurl: string = "";
+        let Eurostaturl: string = "";
       }
 
     }catch (error) {
