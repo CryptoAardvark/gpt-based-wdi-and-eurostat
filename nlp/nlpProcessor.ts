@@ -85,6 +85,14 @@ export class UrlGenerator {
       //Case response includes only simple answer.
       if (params.simpleAnswer !== null) {
         return { data: { wdi: "", imf: "", eur: "", topics: params.topics } };
+      } else {
+        //AI Parsing using pinecone
+        const assistant = this.pineconeassist.Assistant("financial-assistant");
+
+        const msg: Message = {
+          role: "user",
+          content: params.topics,
+        };
       }
 
     }catch (error) {
