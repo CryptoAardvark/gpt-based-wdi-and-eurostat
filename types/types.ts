@@ -59,3 +59,12 @@ export interface YearPerValue {
   [year: string]: string; // Dynamic key for year-value pairs
 }
 
+//thread
+export interface ResultURLData {
+  data: {
+    imf: string;
+    wdi: string;
+    eur: string;
+  };
+};
+
