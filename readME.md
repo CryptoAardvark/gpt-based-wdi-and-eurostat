@@ -1,4 +1,4 @@
-# Eurostat-WDI Data Processor
+# Eurostat-WDI-IMF Data Processor
 
 This project processes and analyzes data from multiple sources, including Eurostat, WDI (World Development Indicators), and IMF (International Monetary Fund). It uses NLP (Natural Language Processing) to generate URLs for API requests and summarize data into meaningful insights.
 
