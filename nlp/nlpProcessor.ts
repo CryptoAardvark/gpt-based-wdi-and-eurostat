@@ -17,4 +17,9 @@ export class UrlGenerator {
     this.openai = new OpenAI({ apiKey: apiKey });
     this.pineconeassist = new Pinecone({ apiKey: pineconeApiKey });
   }
+
+  //define function to analysis user's query
+  async generateFromPrompt(prompt: string): Promise<APIResponse<string>>{
+    
+  }
 }
