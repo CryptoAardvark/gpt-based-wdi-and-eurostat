@@ -173,4 +173,141 @@ export class UrlGenerator {
       };
     }
   }
+
+  async generateResult(
+    prompt: string,
+    imfData: string,
+    wdiData: string,
+    eurostatData: string
+  ) {
+    try {
+      //AI Parsing using openai
+      try {
+        console.log("eurostatData ->", eurostatData);
+        if (imfData !== "" && wdiData !== "" && eurostatData !== "") {
+          const completion = await this.openai.chat.completions.create({
+            model: "gpt-4-1106-preview",
+            messages: [
+              {
+                role: "system",
+                content: `"You are a professional AI assistant. Given context from result of eurostat api:${eurostatData}, + result of imf api: ${imfData}, + result of eurostat api: ${wdiData}, summarize it based on the user's query and generate only a JSON object and no other output. The JSON should include a comprehensive summary, a recommended chart type, and detailed chart source information.
+                JSON Format:
+                {
+                  "chart_source": [
+                    {
+                      "Topic": "indicator1",
+                      "Unit": "unit1",
+                      "country": [
+                        {
+                          "country_name": "country1",
+                          "values": [
+                            {"year1": "value1"},
+                            {"year2": "value2"}
+                          ]
+                        },
+                        {
+                          "country_name": "country2",
+                          "values": [
+                            {"year1": "value3"},
+                            {"year2": "value4"}
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "Topic": "indicator2",
+                      "Unit": "unit2",
+                      "country": [
+                        {
+                          "country_name": "country1",
+                          "values": [
+                            {"year1": "value1"},
+                            {"year2": "value2"}
+                          ]
+                        },
+                        {
+                          "country_name": "country2",
+                          "values": [
+                            {"year1": "value1"},
+                            {"year2": "value2"}
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "recommend_chart_type": "bar/line/pie/scatter/table/heatmap",
+                  "summary": "This is a summary of the data."
+                }
+                Instructions:
+                Contextual Analysis: Parse the provided context (${eurostatData} + ${wdiData} + ${imfData}) thoroughly.
+                Chart Source: Extract topics, units, countries, and values for each year accurately. Ensure no null returns if the context is valid.
+                Chart Recommendation: Choose a suitable chart type (bar, line, pie, scatter, table, heatmap) based on the nature of the data.
+                Summary Creation: Generate a concise, informative overview of the data.
+                Response Optimization: Structure processing to minimize latency and improve response times.
+                Empty Context: If no relevant data is found in the context, return an empty string for each field.
+                Ensure all fields are derived from the available context. Return only the specified JSON format with no additional output."`,
+              },
+
+              {
+                role: "user",
+                content: prompt,
+              },
+            ],
+            temperature: 1,
+          });
+          if (!completion.choices[0].message.content) {
+            throw new Error("AI response content is null");
+          }
+          let sanitizedContent = completion?.choices[0].message.content
+            .replace(/```json/g, "") // Remove JSON code block markers
+            .replace(/```/g, "") // Remove stray backticks
+            .trim();
+          console.log("sanitizedContent ->", sanitizedContent);
+          const params: ResultParams = JSON.parse(sanitizedContent);
+          console.log("correct result", params);
+          return { data: params };
+        } else {
+          throw new Error("imfData or wdiData is empty");
+        }
+      } catch (error: any) {
+        console.log("error ->", error);
+        const recompletiton = await this.openai.chat.completions.create({
+          model: "gpt-4-1106-preview",
+          messages: [
+            {
+              role: "system",
+              content: `Provide a concise and general response (3-5 lines) to the user's query. Avoid specific details unless explicitly requested.`,
+            },
+            {
+              role: "user",
+              content: prompt,
+            },
+          ],
+        });
+        if (!recompletiton.choices[0].message.content) {
+          throw new Error("AI response content is null");
+        }
+        let sanitizedContent = recompletiton?.choices[0].message.content
+          .replace(/```json/g, "") // Remove JSON code block markers
+          .replace(/```/g, "") // Remove stray backticks
+          .trim();
+
+        let emptyMessage: string = sanitizedContent;
+
+        console.log("emptyMessage ->", emptyMessage);
+
+        let summaryMessage: ResultParams = {
+          chart_source: [],
+          recommend_chart_type: "",
+          summary: "",
+        };
+        summaryMessage.summary = emptyMessage;
+        return { data: summaryMessage };
+      }
+    } catch (error) {
+      let errorMessage = "Unknown error";
+      if (error instanceof Error) errorMessage = error.message;
+      return { data: "", error: errorMessage };
+    }
+  }
 }
